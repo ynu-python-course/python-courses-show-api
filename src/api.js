@@ -211,6 +211,10 @@ const walkDirForReactNestedFileTree = function (dir, parentNode) {
   };
   const files = fs.readdirSync(dir);
   files.forEach(function (file) {
+    // ignore the dot prefix hidden files
+    if (file.startsWith('.')) {
+      return;
+    }
     if (fs.statSync(path.join(dir, file)).isDirectory()) {
       // if the file is directory
       const subParentNode = {

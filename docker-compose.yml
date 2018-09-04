@@ -1,0 +1,9 @@
+version: '2'
+services:
+  python-courses-show-api:
+    build: .
+    ports:
+      - "50130:8080"
+    restart: always
+    env_file:
+      - ./.env

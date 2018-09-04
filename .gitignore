@@ -69,3 +69,5 @@ public/courses/*
 
 # Ignore the vscode project files
 .vscode
+
+public

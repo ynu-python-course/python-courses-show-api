@@ -154,6 +154,10 @@ const walkDirForReactSortableTree = function (dir, parentNode) {
   };
   const files = fs.readdirSync(dir);
   files.forEach(function (file) {
+    // ignore the dot prefix hidden files
+    if (file.startsWith('.')) {
+      return;
+    }
     if (fs.statSync(path.join(dir, file)).isDirectory()) {
       // if the file is directory
       const subParentNode = {
@@ -167,7 +171,8 @@ const walkDirForReactSortableTree = function (dir, parentNode) {
     } else {
       // if the file is file
       parentNode['children'].push({
-        title: file
+        title: file,
+        path: '/' + path.relative(webRoot, path.join(dir, file)).replace(/\\/g, '/')
       });
     }
   });
@@ -248,7 +253,7 @@ routes.get('/', (req, res) => {
       courseTree = walkDirForReactUiTree(courseRootDir);
       break;
     case 'reactSortableTree':
-      courseTree = walkDirForReactSortableTree(courseRootDir);
+      courseTree = [walkDirForReactSortableTree(courseRootDir)];
       break;
     default:
       courseTree = walkDirForReactNestedFileTree(courseRootDir);

@@ -22,7 +22,8 @@ COPY src /app/src
 COPY public /app/public
 COPY views /app/views
 COPY test /app/test
-COPY python-courses-show/build/ /app/public
+# copy frontend static files to the specified location
+COPY frontend/python-courses-show/build/ /app/public
 
 RUN ls -la /app/public/
 RUN ls -la /app/

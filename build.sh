@@ -1,31 +1,48 @@
 #!/usr/bin/env bash
 
-git pull
+FRONTEND_BRANCH=react-sortable-tree-theme-file-explorer
 
-if [ -d python-courses-show ]
+echo 'update python-courses-show-api project files ...'
+git pull
+echo 'update dependences ...'
+npm i
+
+echo 'process python-courses-show ...'
+if [ -d frontend/python-courses-show ]
 then
-	cd python-courses-show
+	cd frontend/python-courses-show
+  echo 'update python-courses-show project files ...'
 	git pull
 else
-	git clone https://github.com/ynu-python-course/python-courses-show
-	cd python-courses-show
+  echo 'clone python-courses-show project files ...'
+	git clone https://github.com/ynu-python-course/python-courses-show frontend/python-courses-show
+	cd frontend/python-courses-show
 fi
 
+echo "switch to ${FRONTEND_BRANCH}"
+git checkout ${FRONTEND_BRANCH}
+echo 'update dependences ...'
 npm i
+echo 'building ...'
 npm run build
 
-cd ..
+cd ../..
 
-if [ -d public/courses/2017-autumn ]
+echo 'process 2017-autumn ...'
+if [ -d courses/2017-autumn ]
 then
-	cd public/courses/2017-autumn 
+	cd courses/2017-autumn
+  echo 'update 2017-autumn project files ...'
 	git pull
 else
-	git clone https://github.com/ynu-python-course/2017-autumn public/courses/2017-autumn 
-	cd public/courses/2017-autumn 
+  echo 'clone 2017-autumn project files ...'
+	git clone https://github.com/ynu-python-course/2017-autumn courses/2017-autumn
+	cd courses/2017-autumn
 fi
 
-cd ../../..
+cd ../..
 
+echo 'process docker-compose build ...'
 docker-compose build
+echo 'process docker-compose up -d ...'
 docker-compose up -d

@@ -145,13 +145,15 @@ const walkDirForReactUiTree = function (dir, parentNode) {
     },
   ]
  */
-const walkDirForReactSortableTree = function (dir, parentNode) {
+const walkDirForReactSortableTree = function (dir, parentNode, level=0) {
+  console.info(`level: ${level}, level < 2: ${level < 2}`);
   parentNode = parentNode || {
     title: path.basename(dir),
-    expanded: true,
+    expanded: level < 2,
     isDirectory: true,
     children: []
   };
+  level ++;
   const files = fs.readdirSync(dir);
   files.forEach(function (file) {
     // ignore the dot prefix hidden files
@@ -162,11 +164,11 @@ const walkDirForReactSortableTree = function (dir, parentNode) {
       // if the file is directory
       const subParentNode = {
         title: file,
-        expanded: true,
+        expanded: level < 2,
         isDirectory: true,
         children: []
       };
-      walkDirForReactSortableTree(path.join(dir, file), subParentNode);
+      walkDirForReactSortableTree(path.join(dir, file), subParentNode, level);
       parentNode['children'].push(subParentNode);
     } else {
       // if the file is file
